@@ -1,0 +1,183 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>MDP Solver Learning Toolkit V4</title>
+    <link rel="stylesheet" href="styles.css" />
+    <script>
+      window.MathJax = {
+        tex: {
+          inlineMath: [["\\(", "\\)"]],
+          displayMath: [["\\[", "\\]"]],
+          processEscapes: true
+        },
+        chtml: {
+          scale: 1,
+          matchFontHeight: false
+        }
+      };
+    </script>
+    <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
+  </head>
+  <body>
+    <header class="topbar">
+      <div>
+        <p class="eyebrow">Interactive RL Laboratory</p>
+        <h1>MDP Solver Learning Toolkit V4</h1>
+      </div>
+      <nav class="tabs" aria-label="Primary sections">
+        <button class="tab active" data-section="tutorials">Tutorials</button>
+        <button class="tab" data-section="deterministic">Deterministic Solver</button>
+        <button class="tab" data-section="stochastic">Stochastic Solver</button>
+        <button class="tab" data-section="custom">Custom Builder</button>
+      </nav>
+    </header>
+
+    <main>
+      <section id="tutorials" class="section active">
+        <div class="split">
+          <aside class="module-list" aria-label="Tutorial topics">
+            <button class="topic active" data-topic="foundations">RL Foundations</button>
+            <button class="topic" data-topic="interface">Agent-Environment Loop</button>
+            <button class="topic" data-topic="mdp">MDP Definition</button>
+            <button class="topic" data-topic="terminology">Return, Policy, Values</button>
+            <button class="topic" data-topic="bellman">Bellman Equations</button>
+            <button class="topic" data-topic="valueIteration">Value Iteration</button>
+            <button class="topic" data-topic="policyIteration">Policy Iteration</button>
+            <button class="topic" data-topic="linearAlgebra">Linear Algebra Evaluation</button>
+            <button class="topic" data-topic="limits">Limits and Modern RL</button>
+            <button class="topic" data-topic="further">Further RL Concepts</button>
+          </aside>
+          <article class="tutorial-panel">
+            <div id="tutorial-content"></div>
+          </article>
+        </div>
+      </section>
+
+      <section id="deterministic" class="section">
+        <div class="workspace" data-mode="deterministic">
+          <aside class="control-panel">
+            <h2>Deterministic Lab</h2>
+            <label>Environment
+              <select id="det-env"></select>
+            </label>
+            <label>Algorithm
+              <select id="det-algorithm">
+                <option value="value">Value Iteration</option>
+                <option value="policy">Policy Iteration</option>
+              </select>
+            </label>
+            <label>Discount gamma
+              <input id="det-gamma" type="range" min="0" max="0.99" step="0.01" value="0.9" />
+              <output id="det-gamma-out">0.90</output>
+            </label>
+            <label>Convergence threshold
+              <input id="det-theta" type="number" min="0.0001" step="0.0001" value="0.01" />
+            </label>
+            <label>Terminal reward
+              <input id="det-terminal" type="number" step="1" value="10" />
+            </label>
+            <label>Step / movement reward
+              <input id="det-step" type="number" step="0.1" value="-1" />
+            </label>
+            <button id="start-det">Start / Reset</button>
+            <button id="step-det">Next Computation Step</button>
+            <button class="primary" id="solve-det">Solve to Completion</button>
+          </aside>
+          <div class="lab-panel">
+            <div id="det-summary"></div>
+            <div id="det-status" class="step-status"></div>
+            <div class="visual-row">
+              <div id="det-visual" class="visual"></div>
+              <div id="det-policy" class="visual"></div>
+            </div>
+            <div id="det-trace" class="trace"></div>
+          </div>
+        </div>
+      </section>
+
+      <section id="stochastic" class="section">
+        <div class="workspace" data-mode="stochastic">
+          <aside class="control-panel">
+            <h2>Stochastic Lab</h2>
+            <label>Environment
+              <select id="sto-env"></select>
+            </label>
+            <label>Algorithm
+              <select id="sto-algorithm">
+                <option value="value">Value Iteration</option>
+                <option value="policy">Policy Iteration</option>
+              </select>
+            </label>
+            <label>Discount gamma
+              <input id="sto-gamma" type="range" min="0" max="0.99" step="0.01" value="0.9" />
+              <output id="sto-gamma-out">0.90</output>
+            </label>
+            <label>Convergence threshold
+              <input id="sto-theta" type="number" min="0.0001" step="0.0001" value="0.01" />
+            </label>
+            <label>Terminal reward
+              <input id="sto-terminal" type="number" step="1" value="10" />
+            </label>
+            <label>Step / movement reward
+              <input id="sto-step" type="number" step="0.1" value="-1" />
+            </label>
+            <button id="start-sto">Start / Reset</button>
+            <button id="step-sto">Next Computation Step</button>
+            <button class="primary" id="solve-sto">Solve to Completion</button>
+          </aside>
+          <div class="lab-panel">
+            <div id="sto-summary"></div>
+            <div id="sto-status" class="step-status"></div>
+            <div class="visual-row">
+              <div id="sto-visual" class="visual"></div>
+              <div id="sto-policy" class="visual"></div>
+            </div>
+            <div id="sto-trace" class="trace"></div>
+          </div>
+        </div>
+      </section>
+
+      <section id="custom" class="section">
+        <div class="builder">
+          <aside class="control-panel">
+            <h2>Custom MDP Builder</h2>
+            <label>State names
+              <input id="custom-states" value="S1, S2, S3" />
+            </label>
+            <label>Global actions
+              <input id="custom-actions" value="a1, a2" />
+            </label>
+            <label>Discount gamma
+              <input id="custom-gamma" type="range" min="0" max="0.99" step="0.01" value="0.9" />
+              <output id="custom-gamma-out">0.90</output>
+            </label>
+            <label>Convergence threshold
+              <input id="custom-theta" type="number" min="0.0001" step="0.0001" value="0.01" />
+            </label>
+            <label>Algorithm
+              <select id="custom-algorithm">
+                <option value="value">Value Iteration</option>
+                <option value="policy">Policy Iteration</option>
+              </select>
+            </label>
+            <button id="generate-custom">Generate Transition Rows</button>
+            <button class="primary" id="solve-custom">Validate and Solve</button>
+          </aside>
+          <div class="lab-panel">
+            <div class="notice">
+              For each (state, action), add one or more outcomes as <strong>next state, probability, reward</strong>.
+              Probabilities must sum to 1.
+            </div>
+            <div id="validation"></div>
+            <div id="custom-transitions" class="transition-editor"></div>
+            <div id="custom-trace" class="trace"></div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <script defer src="app.js"></script>
+  </body>
+</html>
